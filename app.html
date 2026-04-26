@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>武汉体育学院研究生导师选择系统</title>
+  <title>武汉体育学院新闻传播学院研究生导师选择系统</title>
 
   <style>
     :root {
@@ -738,13 +738,6 @@
       color: var(--theme_text_weak);
     }
 
-    .empty {
-      padding: 42px 18px;
-      color: var(--theme_text_muted);
-      text-align: center;
-      font-size: 15px;
-    }
-
     .toast {
       position: fixed;
       right: 18px;
@@ -856,12 +849,12 @@
         </div>
         <div class="brand-title">
           <strong>研究生导师选择系统</strong>
-          <span>武汉体育学院</span>
+          <span>武汉体育学院新闻传播学院</span>
         </div>
       </a>
 
       <nav class="nav-actions" aria-label="主导航">
-        <button class="nav-link active" type="button" data-page="studentPage">学生填报</button>
+        <button class="nav-link active" type="button" data-page="studentPage">志愿填报</button>
         <button class="nav-link" type="button" data-page="tutorPage">导师选择情况</button>
         <button class="btn btn-primary" type="button" data-page="studentPage">开始填报</button>
       </nav>
@@ -875,7 +868,7 @@
           <div>
             <div class="eyebrow"><span class="status-dot"></span>2026 级硕士研究生导师志愿填报</div>
             <h1>研究生导师选择系统</h1>
-            <p>为武汉体育学院硕士研究生提供导师志愿填报与导师选择情况查看服务。</p>
+            <p>为武汉体育学院新闻传播学院硕士研究生提供导师志愿填报服务。</p>
             <div class="hero-actions">
               <button class="btn btn-primary" type="button" data-page="studentPage">填写志愿</button>
               <button class="btn btn-secondary" type="button" data-page="tutorPage">查看导师选择情况</button>
@@ -900,12 +893,12 @@
           <div class="feature-card">
             <div class="feature-icon">2</div>
             <strong>志愿参考</strong>
-            <span>学生可查看各导师当前被选择人数，更好地判断志愿填报方向。</span>
+            <span>可查看各导师当前被选择人数，便于进行志愿填报参考。</span>
           </div>
           <div class="feature-card">
             <div class="feature-icon">3</div>
             <strong>信息保护</strong>
-            <span>学生端只展示人数统计，不展示其他学生的姓名、联系方式等个人信息。</span>
+            <span>本页面仅展示人数统计，不展示任何个人信息。</span>
           </div>
         </div>
       </section>
@@ -915,7 +908,7 @@
           <div class="panel">
             <div class="panel-header">
               <div class="panel-title">
-                <h3>学生志愿填报</h3>
+                <h3>志愿填报</h3>
                 <p>请完整填写个人信息，并选择三位不同导师作为志愿。</p>
               </div>
               <span class="pill"><span class="status-dot"></span>填报中</span>
@@ -973,13 +966,13 @@
               <div class="panel-header">
                 <div class="panel-title">
                   <h3>导师选择情况</h3>
-                  <p>这里展示各导师当前被选择人数，帮助学生更合理地填报志愿。</p>
+                  <p>展示各导师当前被选择人数，供志愿填报参考。</p>
                 </div>
-                <span class="pill">学生可见</span>
+                <span class="pill">填报参考</span>
               </div>
 
               <div class="public-note">
-                学生端仅展示人数统计，不展示学生姓名、联系方式等个人信息。
+                页面仅展示人数统计信息，不展示学生个人信息。
               </div>
 
               <div class="public-tutor-list" id="studentTutorStatsBody"></div>
@@ -995,7 +988,7 @@
           <div class="section-title">
             <div>
               <h2>导师选择情况</h2>
-              <p>这里展示所有导师当前被第一、第二、第三志愿选择的人数，供学生填报时参考。</p>
+              <p>展示各导师当前被第一、第二、第三志愿选择的人数，供志愿填报参考。</p>
             </div>
             <div class="hero-actions" style="margin:0; justify-content:flex-end;">
               <button class="btn btn-primary" type="button" data-page="studentPage">返回填报</button>
@@ -1005,7 +998,7 @@
           <div class="table-panel">
             <div class="toolbar">
               <span class="toolbar-title">导师志愿人数统计</span>
-              <span class="pill">仅展示人数，不展示学生个人信息</span>
+              <span class="pill">仅展示人数，不展示个人信息</span>
             </div>
             <div class="table-wrap">
               <table>
@@ -1029,8 +1022,8 @@
   </main>
 
   <footer class="footer">
-    武汉体育学院 · 研究生导师选择系统 · 学生端页面<br />
-    学生端仅展示导师选择人数统计；完整提交名单仅管理员后台可见。
+    武汉体育学院新闻传播学院 · 研究生导师选择系统<br />
+    页面仅展示导师选择人数统计；完整提交名单仅管理员后台可见。
   </footer>
 
   <div class="toast" id="toast"></div>
@@ -1113,9 +1106,9 @@
       if (!pill) return;
 
       if (online) {
-        pill.innerHTML = `<span class="status-dot"></span>已连接后端`;
+        pill.innerHTML = `<span class="status-dot"></span>已连接`;
       } else {
-        pill.innerHTML = `<span class="status-dot warning"></span>本地导师名单`;
+        pill.innerHTML = `<span class="status-dot warning"></span>连接中`;
       }
     }
 
@@ -1272,7 +1265,7 @@
           <div class="hero-trend-item">
             <div>
               <strong>暂无填报数据</strong><br />
-              <span>学生提交后，这里会显示当前较热门的导师选择情况。</span>
+              <span>提交后将自动更新导师选择情况。</span>
             </div>
           </div>
         `;
