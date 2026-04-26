@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>武汉体育学院研究生导师选择系统</title>
+
+  <style>
+    :root {
+      --theme_text: #181d26;
+      --theme_text_weak: rgba(4, 14, 32, 0.69);
+      --theme_text_muted: rgba(4, 14, 32, 0.48);
+      --theme_blue: #1b61c9;
+      --theme_blue_hover: #254fad;
+      --theme_blue_soft: #eef6ff;
+      --theme_success: #16a34a;
+      --theme_warning: #d97706;
+      --theme_error: #dc2626;
+      --theme_surface: #f8fafc;
+      --theme_surface_blue: #f6faff;
+      --theme_border: #e0e2e6;
+      --theme_border_soft: #edf0f4;
+      --theme_shadow: rgba(0, 0, 0, 0.32) 0px 0px 1px,
+        rgba(0, 0, 0, 0.08) 0px 0px 2px,
+        rgba(45, 127, 249, 0.16) 0px 1px 3px,
+        rgba(0, 0, 0, 0.06) 0px 0px 0px 0.5px inset;
+      --theme_shadow_soft: rgba(15, 48, 106, 0.06) 0px 12px 30px;
+      --radius_button: 12px;
+      --radius_panel: 28px;
+      --container: 1180px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--theme_surface);
+      color: var(--theme_text);
+      font-family: Haas, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Microsoft YaHei", Arial, sans-serif;
+      letter-spacing: 0.12px;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .container {
+      width: min(var(--container), calc(100% - 44px));
+      margin: 0 auto;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .page-view {
+      display: block;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--theme_border);
+    }
+
+    .nav-inner {
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+      color: var(--theme_text);
+      text-decoration: none;
+    }
+
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #fff;
+      border: 1px solid var(--theme_border);
+      box-shadow: var(--theme_shadow);
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+    }
+
+    .brand-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .brand-fallback {
+      color: var(--theme_blue);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .brand-title {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      line-height: 1.1;
+    }
+
+    .brand-title strong {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--theme_text);
+      white-space: nowrap;
+    }
+
+    .brand-title span {
+      margin-top: 3px;
+      font-size: 12px;
+      color: var(--theme_text_weak);
+      white-space: nowrap;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: nowrap;
+    }
+
+    .nav-link {
+      height: 38px;
+      border: 0;
+      border-radius: var(--radius_button);
+      background: transparent;
+      color: var(--theme_text_weak);
+      padding: 0 14px;
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0.08px;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: var(--theme_text);
+      background: #f1f5fb;
+    }
+
+    .btn {
+      min-height: 42px;
+      border-radius: var(--radius_button);
+      border: 1px solid transparent;
+      padding: 10px 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.25;
+      letter-spacing: 0.08px;
+      transition: transform .16s ease, background .16s ease, box-shadow .16s ease, border-color .16s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    .btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.62;
+      transform: none;
+    }
+
+    .btn-primary {
+      background: var(--theme_blue);
+      color: #fff;
+      box-shadow: rgba(45, 127, 249, 0.28) 0px 8px 18px;
+    }
+
+    .btn-primary:hover {
+      background: var(--theme_blue_hover);
+    }
+
+    .btn-secondary {
+      background: #fff;
+      color: var(--theme_text);
+      border-color: var(--theme_border);
+      box-shadow: var(--theme_shadow);
+    }
+
+    .btn-secondary:hover {
+      border-color: #c9d8ef;
+      box-shadow: rgba(45,127,249,0.16) 0px 6px 18px;
+    }
+
+    .nav .btn-primary {
+      min-height: 38px;
+      padding: 8px 16px;
+      font-size: 15px;
+      box-shadow: none;
+    }
+
+    .hero {
+      background:
+        radial-gradient(circle at 18% 14%, rgba(45,127,249,0.16), transparent 28%),
+        radial-gradient(circle at 86% 12%, rgba(27,97,201,0.10), transparent 26%),
+        linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+      border-bottom: 1px solid var(--theme_border_soft);
+    }
+
+    .hero-inner {
+      padding: 86px 0 64px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(360px, .95fr);
+      gap: 38px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      width: fit-content;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: var(--theme_blue_soft);
+      color: var(--theme_blue);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.16px;
+      border: 1px solid #d8e9ff;
+      margin-bottom: 18px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--theme_success);
+      box-shadow: rgba(34,197,94,.35) 0 0 0 4px;
+    }
+
+    .status-dot.warning {
+      background: var(--theme_warning);
+      box-shadow: rgba(217,119,6,.28) 0 0 0 4px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      max-width: 680px;
+      font-family: "Haas Groot Disp", Haas, -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+      font-size: clamp(42px, 6.8vw, 64px);
+      line-height: 1.08;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--theme_text);
+    }
+
+    .hero p {
+      margin: 22px 0 0;
+      max-width: 680px;
+      color: var(--theme_text_weak);
+      font-size: 20px;
+      line-height: 1.45;
+      letter-spacing: 0.18px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .hero-panel {
+      background: rgba(255,255,255,0.88);
+      border: 1px solid var(--theme_border);
+      border-radius: 32px;
+      box-shadow: var(--theme_shadow_soft);
+      padding: 22px;
+    }
+
+    .hero-panel-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .hero-panel-title strong {
+      font-size: 18px;
+      color: var(--theme_text);
+    }
+
+    .hero-trend-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .hero-trend-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      border: 1px solid var(--theme_border_soft);
+      background: var(--theme_surface);
+    }
+
+    .hero-trend-item strong {
+      color: var(--theme_text);
+      font-size: 16px;
+    }
+
+    .hero-trend-item span {
+      color: var(--theme_text_weak);
+      font-size: 13px;
+    }
+
+    .feature-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      padding-bottom: 64px;
+    }
+
+    .feature-card {
+      background: #fff;
+      border: 1px solid var(--theme_border);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: rgba(15,48,106,0.05) 0px 0px 20px;
+      min-height: 150px;
+    }
+
+    .feature-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: var(--theme_blue_soft);
+      color: var(--theme_blue);
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    .feature-card strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--theme_text);
+      font-size: 22px;
+      font-weight: 600;
+      line-height: 1.25;
+      letter-spacing: 0.1px;
+    }
+
+    .feature-card span {
+      color: var(--theme_text_weak);
+      font-size: 15px;
+      line-height: 1.5;
+      letter-spacing: 0.12px;
+    }
+
+    .section {
+      padding: 72px 0;
+    }
+
+    .section-title {
+      margin-bottom: 24px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      color: var(--theme_text);
+      font-size: clamp(32px, 4.4vw, 44px);
+      line-height: 1.15;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+    }
+
+    .section-title p {
+      margin: 8px 0 0;
+      max-width: 720px;
+      color: var(--theme_text_weak);
+      font-size: 17px;
+      line-height: 1.5;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(340px, .9fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .panel,
+    .table-panel {
+      background: #fff;
+      border: 1px solid var(--theme_border);
+      border-radius: var(--radius_panel);
+      box-shadow: rgba(15,48,106,0.05) 0px 0px 20px;
+      overflow: hidden;
+    }
+
+    .panel-header {
+      padding: 26px 28px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 18px;
+    }
+
+    .panel-title h3 {
+      margin: 0;
+      color: var(--theme_text);
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.18;
+    }
+
+    .panel-title p {
+      margin: 8px 0 0;
+      color: var(--theme_text_weak);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--theme_blue_soft);
+      color: var(--theme_blue);
+      border: 1px solid #d8e9ff;
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .form {
+      padding: 28px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      color: var(--theme_text);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.08px;
+    }
+
+    .field,
+    select {
+      width: 100%;
+      height: 46px;
+      border: 1px solid var(--theme_border);
+      border-radius: 14px;
+      background: #fff;
+      color: var(--theme_text);
+      padding: 0 14px;
+      outline: none;
+      font-size: 15px;
+      letter-spacing: 0.1px;
+      transition: box-shadow .16s ease, border-color .16s ease, background .16s ease;
+    }
+
+    .field::placeholder {
+      color: var(--theme_text_muted);
+    }
+
+    .field:focus,
+    select:focus {
+      border-color: #8ab9ff;
+      box-shadow: rgba(45,127,249,0.18) 0 0 0 4px;
+      background: #fff;
+    }
+
+    .form-footer {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .note {
+      margin: 0;
+      max-width: 650px;
+      color: var(--theme_text_weak);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .preview-card {
+      margin: 0 28px 28px;
+      background: var(--theme_surface_blue);
+      border: 1px solid #dbeafe;
+      border-radius: 22px;
+      padding: 18px;
+    }
+
+    .preview-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .preview-title {
+      color: var(--theme_text);
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .preview-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .choice-row {
+      min-height: 46px;
+      border: 1px solid var(--theme_border_soft);
+      border-radius: 16px;
+      background: #fff;
+      padding: 10px 14px;
+      display: grid;
+      grid-template-columns: 92px 1fr;
+      gap: 12px;
+      align-items: center;
+      font-size: 14px;
+    }
+
+    .choice-row span:first-child {
+      color: var(--theme_text_weak);
+    }
+
+    .choice-row span:last-child {
+      color: var(--theme_text);
+      font-weight: 600;
+    }
+
+    .right-stack {
+      display: grid;
+      gap: 22px;
+    }
+
+    .public-tutor-list {
+      padding: 18px 28px 28px;
+      display: grid;
+      gap: 10px;
+      max-height: 560px;
+      overflow: auto;
+    }
+
+    .public-tutor-item {
+      display: grid;
+      grid-template-columns: minmax(72px, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      border: 1px solid var(--theme_border_soft);
+      background: var(--theme_surface);
+      border-radius: 16px;
+      padding: 13px 14px;
+    }
+
+    .public-tutor-name {
+      color: var(--theme_text);
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .public-tutor-counts {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .public-count-pill {
+      height: 26px;
+      border-radius: 999px;
+      padding: 0 9px;
+      display: inline-flex;
+      align-items: center;
+      background: #fff;
+      border: 1px solid var(--theme_border);
+      color: var(--theme_text_weak);
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .public-count-pill.primary {
+      background: var(--theme_blue_soft);
+      color: var(--theme_blue);
+      border-color: #d8e9ff;
+    }
+
+    .public-note {
+      margin: 18px 28px 0;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: var(--theme_surface_blue);
+      border: 1px solid #dbeafe;
+      color: var(--theme_text_weak);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .toolbar {
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      background: #fff;
+    }
+
+    .toolbar-title {
+      color: var(--theme_text);
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      background: #fff;
+    }
+
+    table {
+      width: 100%;
+      min-width: 820px;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 15px 18px;
+      text-align: left;
+      border-top: 1px solid var(--theme_border_soft);
+      white-space: nowrap;
+      font-size: 14px;
+      letter-spacing: 0.08px;
+    }
+
+    th {
+      color: var(--theme_text_weak);
+      font-weight: 600;
+      background: var(--theme_surface);
+    }
+
+    td {
+      color: var(--theme_text);
+    }
+
+    tr:hover td {
+      background: #f9fbff;
+    }
+
+    .rank-badge {
+      min-width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 9px;
+      border: 1px solid var(--theme_border);
+      background: #fff;
+      color: var(--theme_text_weak);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .rank-1 {
+      background: var(--theme_blue_soft);
+      color: var(--theme_blue);
+      border-color: #d8e9ff;
+    }
+
+    .rank-2 {
+      background: #f4f7fb;
+      color: var(--theme_text_weak);
+    }
+
+    .empty {
+      padding: 42px 18px;
+      color: var(--theme_text_muted);
+      text-align: center;
+      font-size: 15px;
+    }
+
+    .toast {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 100;
+      max-width: 380px;
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(18px);
+      border: 1px solid var(--theme_border);
+      border-radius: 18px;
+      box-shadow: rgba(15,48,106,0.18) 0px 18px 48px;
+      padding: 14px 16px;
+      color: var(--theme_text_weak);
+      font-size: 14px;
+      line-height: 1.45;
+      opacity: 0;
+      transform: translateY(12px);
+      pointer-events: none;
+      transition: .18s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .toast strong {
+      display: block;
+      color: var(--theme_text);
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .footer {
+      padding: 36px 20px 48px;
+      text-align: center;
+      color: var(--theme_text_muted);
+      font-size: 13px;
+      line-height: 1.7;
+      background: #fff;
+      border-top: 1px solid var(--theme_border_soft);
+    }
+
+    @media (max-width: 940px) {
+      .hero-inner,
+      .layout,
+      .feature-strip {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-inner {
+        padding: 64px 0 48px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .nav-inner {
+        height: auto;
+        min-height: 64px;
+        padding: 10px 0;
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav-actions {
+        width: 100%;
+        overflow-x: auto;
+        padding-bottom: 2px;
+      }
+
+      .nav-link,
+      .nav .btn-primary {
+        flex: 0 0 auto;
+      }
+
+      .form-grid,
+      .feature-strip {
+        grid-template-columns: 1fr;
+      }
+
+      .form-footer,
+      .toolbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .hero-actions {
+        width: 100%;
+      }
+
+      .hero-actions .btn,
+      .form-footer .btn {
+        width: 100%;
+      }
+
+      .container {
+        width: min(100% - 28px, var(--container));
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a href="#top" class="brand" aria-label="返回首页">
+        <div class="brand-logo">
+          <img src="武体校徽.jpeg" alt="武汉体育学院校徽" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+          <span class="brand-fallback" style="display:none;">武体</span>
+        </div>
+        <div class="brand-title">
+          <strong>研究生导师选择系统</strong>
+          <span>武汉体育学院</span>
+        </div>
+      </a>
+
+      <nav class="nav-actions" aria-label="主导航">
+        <button class="nav-link active" type="button" data-page="studentPage">学生填报</button>
+        <button class="nav-link" type="button" data-page="tutorPage">导师选择情况</button>
+        <button class="btn btn-primary" type="button" data-page="studentPage">开始填报</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <div class="page-view" id="studentPage">
+      <section class="hero">
+        <div class="container hero-inner">
+          <div>
+            <div class="eyebrow"><span class="status-dot"></span>2026 级硕士研究生导师志愿填报</div>
+            <h1>研究生导师选择系统</h1>
+            <p>为武汉体育学院硕士研究生提供导师志愿填报与导师选择情况查看服务。</p>
+            <div class="hero-actions">
+              <button class="btn btn-primary" type="button" data-page="studentPage">填写志愿</button>
+              <button class="btn btn-secondary" type="button" data-page="tutorPage">查看导师选择情况</button>
+            </div>
+          </div>
+
+          <div class="hero-panel">
+            <div class="hero-panel-title">
+              <strong>导师选择情况</strong>
+              <span class="pill" id="apiStatusPill"><span class="status-dot warning"></span>连接中</span>
+            </div>
+            <div class="hero-trend-list" id="heroTutorTrend"></div>
+          </div>
+        </div>
+
+        <div class="container feature-strip">
+          <div class="feature-card">
+            <div class="feature-icon">1</div>
+            <strong>三档志愿</strong>
+            <span>第一、第二、第三志愿分级记录，自动校验重复选择。</span>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">2</div>
+            <strong>志愿参考</strong>
+            <span>学生可查看各导师当前被选择人数，更好地判断志愿填报方向。</span>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">3</div>
+            <strong>信息保护</strong>
+            <span>学生端只展示人数统计，不展示其他学生的姓名、联系方式等个人信息。</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container layout">
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">
+                <h3>学生志愿填报</h3>
+                <p>请完整填写个人信息，并选择三位不同导师作为志愿。</p>
+              </div>
+              <span class="pill"><span class="status-dot"></span>填报中</span>
+            </div>
+
+            <form class="form" id="choiceForm">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="studentName">姓名</label>
+                  <input class="field" id="studentName" name="studentName" placeholder="请输入姓名" autocomplete="name" required />
+                </div>
+                <div class="form-group">
+                  <label for="major">专业</label>
+                  <input class="field" id="major" name="major" placeholder="如：新闻与传播" required />
+                </div>
+                <div class="form-group full">
+                  <label for="contact">联系方式</label>
+                  <input class="field" id="contact" name="contact" placeholder="手机号 / 微信 / 邮箱，用于防止重复提交" required />
+                </div>
+                <div class="form-group">
+                  <label for="firstChoice">第一志愿导师</label>
+                  <select id="firstChoice" required></select>
+                </div>
+                <div class="form-group">
+                  <label for="secondChoice">第二志愿导师</label>
+                  <select id="secondChoice" required></select>
+                </div>
+                <div class="form-group full">
+                  <label for="thirdChoice">第三志愿导师</label>
+                  <select id="thirdChoice" required></select>
+                </div>
+              </div>
+
+              <div class="form-footer">
+                <p class="note">规则：三个志愿不能重复。同一联系方式再次提交，会覆盖当前结果；正式版建议改成“学号唯一”。</p>
+                <button class="btn btn-primary" id="submitBtn" type="submit">提交志愿</button>
+              </div>
+            </form>
+
+            <div class="preview-card">
+              <div class="preview-top">
+                <span class="preview-title">当前选择预览</span>
+                <span class="pill">实时预览</span>
+              </div>
+              <div class="preview-list">
+                <div class="choice-row"><span>第一志愿</span><span id="previewFirst">尚未选择</span></div>
+                <div class="choice-row"><span>第二志愿</span><span id="previewSecond">尚未选择</span></div>
+                <div class="choice-row"><span>第三志愿</span><span id="previewThird">尚未选择</span></div>
+              </div>
+            </div>
+          </div>
+
+          <aside class="right-stack">
+            <div class="panel tutor-public-panel">
+              <div class="panel-header">
+                <div class="panel-title">
+                  <h3>导师选择情况</h3>
+                  <p>这里展示各导师当前被选择人数，帮助学生更合理地填报志愿。</p>
+                </div>
+                <span class="pill">学生可见</span>
+              </div>
+
+              <div class="public-note">
+                学生端仅展示人数统计，不展示学生姓名、联系方式等个人信息。
+              </div>
+
+              <div class="public-tutor-list" id="studentTutorStatsBody"></div>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </div>
+
+    <div class="page-view hidden" id="tutorPage">
+      <section class="section">
+        <div class="container">
+          <div class="section-title">
+            <div>
+              <h2>导师选择情况</h2>
+              <p>这里展示所有导师当前被第一、第二、第三志愿选择的人数，供学生填报时参考。</p>
+            </div>
+            <div class="hero-actions" style="margin:0; justify-content:flex-end;">
+              <button class="btn btn-primary" type="button" data-page="studentPage">返回填报</button>
+            </div>
+          </div>
+
+          <div class="table-panel">
+            <div class="toolbar">
+              <span class="toolbar-title">导师志愿人数统计</span>
+              <span class="pill">仅展示人数，不展示学生个人信息</span>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>序号</th>
+                    <th>导师姓名</th>
+                    <th>第一志愿</th>
+                    <th>第二志愿</th>
+                    <th>第三志愿</th>
+                    <th>总选择</th>
+                  </tr>
+                </thead>
+                <tbody id="tutorStatsBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    武汉体育学院 · 研究生导师选择系统 · 学生端页面<br />
+    学生端仅展示导师选择人数统计；完整提交名单仅管理员后台可见。
+  </footer>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const FALLBACK_TUTORS = [
+      "陈积银", "窦光华", "付晓静", "付志华", "高立", "韩瑞珍", "侯小琴", "胡家浩",
+      "黄海", "姜小凌", "李爱群", "李保存", "李菁", "刘娟", "刘晓丽", "吕永峰",
+      "彭肇一", "邵娟", "滕姗姗", "万晓红", "汪蓓", "王创业", "王润斌", "王雷",
+      "王相飞", "王真真", "王雪莲", "吴丹", "肖宁", "姚洪磊", "游迎亚", "张德胜",
+      "张钢花", "周榕", "邹瑶"
+    ];
+
+    let tutors = [...FALLBACK_TUTORS];
+    let latestStats = [];
+
+    const choiceForm = document.getElementById("choiceForm");
+    const firstChoice = document.getElementById("firstChoice");
+    const secondChoice = document.getElementById("secondChoice");
+    const thirdChoice = document.getElementById("thirdChoice");
+    const previewFirst = document.getElementById("previewFirst");
+    const previewSecond = document.getElementById("previewSecond");
+    const previewThird = document.getElementById("previewThird");
+    const submitBtn = document.getElementById("submitBtn");
+    const toast = document.getElementById("toast");
+
+    function showToast(title, message) {
+      toast.innerHTML = `<strong>${escapeHtml(title)}</strong>${escapeHtml(message)}`;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 3000);
+    }
+
+    function escapeHtml(value) {
+      return String(value || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    async function apiGet(url) {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: { "Accept": "application/json" },
+        credentials: "same-origin"
+      });
+
+      const data = await response.json().catch(() => null);
+
+      if (!response.ok || !data || data.code !== 200) {
+        throw new Error(data?.message || "接口请求失败");
+      }
+
+      return data.data;
+    }
+
+    async function apiPost(url, payload) {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        credentials: "same-origin",
+        body: JSON.stringify(payload)
+      });
+
+      const data = await response.json().catch(() => null);
+
+      if (!response.ok || !data || data.code !== 200) {
+        throw new Error(data?.message || "提交失败");
+      }
+
+      return data;
+    }
+
+    function setApiStatus(online) {
+      const pill = document.getElementById("apiStatusPill");
+      if (!pill) return;
+
+      if (online) {
+        pill.innerHTML = `<span class="status-dot"></span>已连接后端`;
+      } else {
+        pill.innerHTML = `<span class="status-dot warning"></span>本地导师名单`;
+      }
+    }
+
+    function initSelect(select, placeholder) {
+      select.innerHTML = "";
+
+      const placeholderOption = document.createElement("option");
+      placeholderOption.value = "";
+      placeholderOption.textContent = placeholder;
+      placeholderOption.selected = true;
+      placeholderOption.disabled = true;
+      select.appendChild(placeholderOption);
+
+      tutors.forEach(name => {
+        const option = document.createElement("option");
+        option.value = name;
+        option.textContent = name;
+        select.appendChild(option);
+      });
+    }
+
+    function refreshSelects() {
+      const currentFirst = firstChoice.value;
+      const currentSecond = secondChoice.value;
+      const currentThird = thirdChoice.value;
+
+      initSelect(firstChoice, "请选择第一志愿导师");
+      initSelect(secondChoice, "请选择第二志愿导师");
+      initSelect(thirdChoice, "请选择第三志愿导师");
+
+      if (tutors.includes(currentFirst)) firstChoice.value = currentFirst;
+      if (tutors.includes(currentSecond)) secondChoice.value = currentSecond;
+      if (tutors.includes(currentThird)) thirdChoice.value = currentThird;
+
+      updatePreview();
+    }
+
+    function buildZeroStats() {
+      return tutors.map(name => ({
+        tutor: name,
+        first: 0,
+        second: 0,
+        third: 0,
+        total: 0
+      }));
+    }
+
+    async function loadTutors() {
+      try {
+        const data = await apiGet("/api/tutors");
+        if (Array.isArray(data) && data.length > 0) {
+          tutors = data;
+        }
+        setApiStatus(true);
+      } catch (error) {
+        console.warn(error);
+        tutors = [...FALLBACK_TUTORS];
+        setApiStatus(false);
+      }
+
+      refreshSelects();
+    }
+
+    async function loadTutorStats() {
+      try {
+        const data = await apiGet("/api/public/tutor-stats");
+        latestStats = normalizeStats(Array.isArray(data) ? data : []);
+        setApiStatus(true);
+      } catch (error) {
+        console.warn(error);
+        latestStats = buildZeroStats();
+        setApiStatus(false);
+      }
+
+      renderTutorStats(latestStats);
+      renderStudentTutorStats(latestStats);
+      renderHeroTutorTrend(latestStats);
+    }
+
+    function normalizeStats(apiStats) {
+      const map = new Map();
+
+      apiStats.forEach(item => {
+        map.set(item.tutor, {
+          tutor: item.tutor,
+          first: Number(item.first || 0),
+          second: Number(item.second || 0),
+          third: Number(item.third || 0),
+          total: Number(item.total || 0)
+        });
+      });
+
+      return tutors.map(name => {
+        return map.get(name) || {
+          tutor: name,
+          first: 0,
+          second: 0,
+          third: 0,
+          total: 0
+        };
+      }).sort((a, b) => b.first - a.first || b.total - a.total || a.tutor.localeCompare(b.tutor, "zh-CN"));
+    }
+
+    function renderTutorStats(stats) {
+      const tutorStatsBody = document.getElementById("tutorStatsBody");
+      if (!tutorStatsBody) return;
+
+      tutorStatsBody.innerHTML = "";
+
+      stats.forEach((item, index) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${escapeHtml(item.tutor)}</td>
+          <td><span class="rank-badge rank-1">${item.first}</span></td>
+          <td><span class="rank-badge rank-2">${item.second}</span></td>
+          <td><span class="rank-badge">${item.third}</span></td>
+          <td>${item.total}</td>
+        `;
+        tutorStatsBody.appendChild(tr);
+      });
+    }
+
+    function renderStudentTutorStats(stats) {
+      const container = document.getElementById("studentTutorStatsBody");
+      if (!container) return;
+
+      container.innerHTML = "";
+
+      stats.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "public-tutor-item";
+        div.innerHTML = `
+          <div class="public-tutor-name">${escapeHtml(item.tutor)}</div>
+          <div class="public-tutor-counts">
+            <span class="public-count-pill primary">一志愿 ${item.first}</span>
+            <span class="public-count-pill">二志愿 ${item.second}</span>
+            <span class="public-count-pill">三志愿 ${item.third}</span>
+            <span class="public-count-pill">合计 ${item.total}</span>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function renderHeroTutorTrend(stats) {
+      const container = document.getElementById("heroTutorTrend");
+      if (!container) return;
+
+      const hot = stats.filter(item => item.total > 0).slice(0, 4);
+
+      if (!hot.length) {
+        container.innerHTML = `
+          <div class="hero-trend-item">
+            <div>
+              <strong>暂无填报数据</strong><br />
+              <span>学生提交后，这里会显示当前较热门的导师选择情况。</span>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = hot.map(item => `
+        <div class="hero-trend-item">
+          <div>
+            <strong>${escapeHtml(item.tutor)}</strong><br />
+            <span>第一志愿 ${item.first} · 第二志愿 ${item.second} · 第三志愿 ${item.third}</span>
+          </div>
+          <span class="public-count-pill primary">合计 ${item.total}</span>
+        </div>
+      `).join("");
+    }
+
+    function updatePreview() {
+      previewFirst.textContent = firstChoice.value || "尚未选择";
+      previewSecond.textContent = secondChoice.value || "尚未选择";
+      previewThird.textContent = thirdChoice.value || "尚未选择";
+    }
+
+    function switchPage(pageId) {
+      document.querySelectorAll(".page-view").forEach(page => page.classList.add("hidden"));
+      const target = document.getElementById(pageId);
+      if (target) target.classList.remove("hidden");
+
+      document.querySelectorAll(".nav-link[data-page]").forEach(button => {
+        button.classList.toggle("active", button.dataset.page === pageId);
+      });
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function validateLocalForm(payload) {
+      if (!payload.studentName || !payload.major || !payload.contact) {
+        return "请完整填写姓名、专业和联系方式。";
+      }
+
+      if (!payload.firstChoice || !payload.secondChoice || !payload.thirdChoice) {
+        return "请完整选择第一、第二、第三志愿导师。";
+      }
+
+      if (new Set([payload.firstChoice, payload.secondChoice, payload.thirdChoice]).size !== 3) {
+        return "第一志愿、第二志愿、第三志愿不能选择同一位导师。";
+      }
+
+      return "";
+    }
+
+    choiceForm.addEventListener("submit", async event => {
+      event.preventDefault();
+
+      const payload = {
+        studentName: document.getElementById("studentName").value.trim(),
+        major: document.getElementById("major").value.trim(),
+        contact: document.getElementById("contact").value.trim(),
+        firstChoice: firstChoice.value,
+        secondChoice: secondChoice.value,
+        thirdChoice: thirdChoice.value
+      };
+
+      const error = validateLocalForm(payload);
+      if (error) {
+        showToast("提交失败", error);
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "提交中...";
+
+      try {
+        const result = await apiPost("/api/submit-choice", payload);
+        showToast("提交成功", result.message || "志愿已提交。");
+        choiceForm.reset();
+        updatePreview();
+        await loadTutorStats();
+      } catch (error) {
+        showToast("提交失败", error.message || "请检查后端是否已经启动。 ");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "提交志愿";
+      }
+    });
+
+    [firstChoice, secondChoice, thirdChoice].forEach(select => {
+      select.addEventListener("change", updatePreview);
+    });
+
+    document.querySelectorAll("[data-page]").forEach(button => {
+      button.addEventListener("click", () => switchPage(button.dataset.page));
+    });
+
+    async function initPage() {
+      refreshSelects();
+      renderTutorStats(buildZeroStats());
+      renderStudentTutorStats(buildZeroStats());
+      renderHeroTutorTrend(buildZeroStats());
+      await loadTutors();
+      await loadTutorStats();
+    }
+
+    initPage();
+  </script>
+</body>
+</html>
