@@ -3,3 +3,6 @@ run = "python app.py"
 [deployment]
 deploymentTarget = "autoscale"
 run = ["gunicorn", "--bind=0.0.0.0:5000", "--reuse-port", "app:app"]
+
+[agent]
+expertMode = true
