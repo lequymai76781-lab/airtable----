@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>管理员后台｜武汉体育学院研究生导师选择系统</title>
+  <title>管理员后台｜武汉体育学院新闻传播学院研究生导师选择系统</title>
 
   <style>
     :root {
@@ -432,6 +432,11 @@
       border-color: #d8e9ff;
     }
 
+    .rank-2 {
+      background: #f4f7fb;
+      color: var(--theme_text_weak);
+    }
+
     .status-create {
       background: #f0fdf4;
       color: var(--theme_green);
@@ -449,6 +454,107 @@
       color: var(--theme_text_muted);
       text-align: center;
       font-size: 15px;
+    }
+
+    .modal-mask {
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(11, 23, 45, 0.42);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .modal-card {
+      width: min(980px, 100%);
+      max-height: min(760px, calc(100vh - 48px));
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: #fff;
+      border: 1px solid var(--theme_border);
+      border-radius: 28px;
+      box-shadow: rgba(15, 48, 106, 0.22) 0 28px 80px;
+    }
+
+    .modal-header {
+      padding: 24px 26px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+      border-bottom: 1px solid var(--theme_border_soft);
+    }
+
+    .modal-header h2 {
+      margin: 10px 0 6px;
+      color: var(--theme_text);
+      font-size: 30px;
+      line-height: 1.2;
+      font-weight: 700;
+    }
+
+    .modal-header p {
+      margin: 0;
+      color: var(--theme_text_weak);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .modal-close {
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--theme_border);
+      border-radius: 50%;
+      background: #fff;
+      color: var(--theme_text_weak);
+      font-size: 24px;
+      line-height: 1;
+      flex: 0 0 auto;
+    }
+
+    .modal-close:hover {
+      background: var(--theme_surface);
+    }
+
+    .modal-body {
+      overflow: auto;
+      background: #fff;
+    }
+
+    .clear-form {
+      display: grid;
+      gap: 14px;
+      padding: 24px 26px 28px;
+    }
+
+    .danger-note {
+      margin: 0;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #991b1b;
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    .view-students-btn {
+      min-height: 32px;
+      padding: 5px 12px;
+      font-size: 13px;
     }
 
     .toast {
@@ -528,19 +634,19 @@
 <body>
   <header class="nav">
     <div class="container nav-inner">
-      <a href="/" class="brand" aria-label="返回学生端">
+      <a href="/" class="brand" aria-label="返回志愿填报页面">
         <div class="brand-logo">
           <img src="武体校徽.jpeg" alt="武汉体育学院校徽" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
           <span class="brand-fallback" style="display:none;">武体</span>
         </div>
         <div class="brand-title">
           <strong>研究生导师选择系统</strong>
-          <span>管理员后台</span>
+          <span>武汉体育学院新闻传播学院 · 管理员后台</span>
         </div>
       </a>
 
       <div class="nav-actions">
-        <button class="btn btn-secondary" type="button" onclick="window.location.href='/'">学生端</button>
+        <button class="btn btn-secondary" type="button" onclick="window.location.href='/'">志愿填报</button>
         <button class="btn btn-danger hidden" id="logoutBtn" type="button">退出登录</button>
       </div>
     </div>
@@ -549,7 +655,7 @@
   <section class="login-shell" id="loginView">
     <div class="login-card">
       <h1>管理员登录</h1>
-      <p>登录后可查看完整学生提交名单、联系方式、志愿统计和导出 Excel。</p>
+      <p>登录后可查看完整提交名单、联系方式、志愿统计和导出 Excel。</p>
 
       <form id="loginForm">
         <div class="form-group">
@@ -566,9 +672,7 @@
       </form>
 
       <div class="login-tip">
-        初始账号：admin<br />
-        初始密码：123456<br />
-        正式使用前请在后端代码或数据库中修改默认密码。
+        管理员账号和初始密码请以部署配置或学院管理人员发放为准。正式使用前请修改默认密码，并设置 SECRET_KEY。
       </div>
     </div>
   </section>
@@ -578,18 +682,19 @@
       <div class="section-title">
         <div>
           <h1>管理员后台</h1>
-          <p>这里可以查看完整学生提交结果、导师志愿统计、提交日志，并导出 Excel 文件。</p>
+          <p>查看完整提交结果、导师志愿统计、提交日志，并导出 Excel 文件。</p>
         </div>
         <div class="toolbar-actions">
           <button class="btn btn-secondary" type="button" id="refreshBtn">刷新数据</button>
           <button class="btn btn-primary" type="button" id="exportBtn">导出 Excel</button>
+          <button class="btn btn-danger" type="button" id="clearDataBtn">清空测试数据</button>
         </div>
       </div>
 
       <div class="stats-grid">
         <div class="stat-card">
           <strong id="totalStudents">0</strong>
-          <span>已提交学生</span>
+          <span>已提交人数</span>
         </div>
         <div class="stat-card">
           <strong id="totalChoices">0</strong>
@@ -610,7 +715,7 @@
           <span class="toolbar-title">数据查看</span>
           <div class="toolbar-actions">
             <button class="tab-btn active" type="button" data-tab="statsTab">导师志愿统计</button>
-            <button class="tab-btn" type="button" data-tab="submissionsTab">学生提交结果</button>
+            <button class="tab-btn" type="button" data-tab="submissionsTab">提交结果</button>
             <button class="tab-btn" type="button" data-tab="logsTab">提交日志</button>
           </div>
         </div>
@@ -626,6 +731,7 @@
                   <th>第二志愿</th>
                   <th>第三志愿</th>
                   <th>总选择</th>
+                  <th>查看学生</th>
                 </tr>
               </thead>
               <tbody id="statsBody"></tbody>
@@ -652,7 +758,7 @@
               </thead>
               <tbody id="submissionsBody"></tbody>
             </table>
-            <div class="empty hidden" id="submissionsEmpty">暂无学生提交记录。</div>
+            <div class="empty hidden" id="submissionsEmpty">暂无提交记录。</div>
           </div>
         </div>
 
@@ -681,6 +787,71 @@
     </div>
   </main>
 
+  <div class="modal-mask hidden" id="tutorStudentsModal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTutorTitle">
+      <div class="modal-header">
+        <div>
+          <span class="status-badge status-create">导师学生明细</span>
+          <h2 id="modalTutorTitle">导师学生明细</h2>
+          <p>显示选择该导师的学生名单，并标注该导师是第几志愿。</p>
+        </div>
+        <button class="modal-close" type="button" id="closeTutorStudentsModal" aria-label="关闭弹窗">×</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>序号</th>
+                <th>学生姓名</th>
+                <th>专业</th>
+                <th>联系方式</th>
+                <th>志愿等级</th>
+                <th>提交时间</th>
+              </tr>
+            </thead>
+            <tbody id="tutorStudentsBody"></tbody>
+          </table>
+          <div class="empty hidden" id="tutorStudentsEmpty">暂无学生选择该导师。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-mask hidden" id="clearDataModal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="clearDataTitle">
+      <div class="modal-header">
+        <div>
+          <span class="status-badge status-update">高风险操作</span>
+          <h2 id="clearDataTitle">清空测试数据</h2>
+          <p>该操作只会删除学生提交记录和提交日志，不会删除导师名单和管理员账号。</p>
+        </div>
+        <button class="modal-close" type="button" id="closeClearDataModal" aria-label="关闭弹窗">×</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="clear-form">
+          <p class="danger-note">
+            清空后统计表将恢复为空。为避免误操作，请输入确认口令“确认清空”，并再次输入当前管理员密码。
+          </p>
+          <div class="form-group">
+            <label for="clearConfirmText">确认口令</label>
+            <input class="field" id="clearConfirmText" placeholder="请输入：确认清空" autocomplete="off" />
+          </div>
+          <div class="form-group">
+            <label for="clearAdminPassword">管理员密码</label>
+            <input class="field" id="clearAdminPassword" type="password" placeholder="请输入当前管理员密码" autocomplete="current-password" />
+          </div>
+          <div class="modal-actions">
+            <button class="btn btn-secondary" type="button" id="cancelClearDataBtn">取消</button>
+            <button class="btn btn-danger" type="button" id="confirmClearDataBtn">确认清空</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="toast" id="toast"></div>
 
   <script>
@@ -691,7 +862,14 @@
     const logoutBtn = document.getElementById("logoutBtn");
     const refreshBtn = document.getElementById("refreshBtn");
     const exportBtn = document.getElementById("exportBtn");
+    const clearDataBtn = document.getElementById("clearDataBtn");
+    const clearDataModal = document.getElementById("clearDataModal");
+    const clearConfirmText = document.getElementById("clearConfirmText");
+    const clearAdminPassword = document.getElementById("clearAdminPassword");
+    const confirmClearDataBtn = document.getElementById("confirmClearDataBtn");
     const toast = document.getElementById("toast");
+
+    let cachedSubmissions = [];
 
     function escapeHtml(value) {
       return String(value || "")
@@ -703,7 +881,10 @@
     }
 
     function showToast(title, message) {
-      toast.innerHTML = `<strong>${escapeHtml(title)}</strong>${escapeHtml(message)}`;
+      const titleNode = document.createElement("strong");
+      titleNode.textContent = title;
+      const messageNode = document.createTextNode(message);
+      toast.replaceChildren(titleNode, messageNode);
       toast.classList.add("show");
       setTimeout(() => toast.classList.remove("show"), 3000);
     }
@@ -801,7 +982,7 @@
 
       try {
         await loadAllData();
-        showToast("已刷新", "后台数据已经更新。 ");
+        showToast("已刷新", "后台数据已经更新。");
       } catch (error) {
         showToast("刷新失败", error.message);
       } finally {
@@ -812,6 +993,63 @@
 
     exportBtn.addEventListener("click", () => {
       window.location.href = "/api/admin/export";
+    });
+
+    function openClearDataModal() {
+      clearConfirmText.value = "";
+      clearAdminPassword.value = "";
+      clearDataModal.classList.remove("hidden");
+      clearDataModal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      clearConfirmText.focus();
+    }
+
+    function closeClearDataModal() {
+      clearDataModal.classList.add("hidden");
+      clearDataModal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+      clearConfirmText.value = "";
+      clearAdminPassword.value = "";
+    }
+
+    clearDataBtn.addEventListener("click", openClearDataModal);
+    document.getElementById("closeClearDataModal").addEventListener("click", closeClearDataModal);
+    document.getElementById("cancelClearDataBtn").addEventListener("click", closeClearDataModal);
+
+    confirmClearDataBtn.addEventListener("click", async () => {
+      const confirmText = clearConfirmText.value.trim();
+      const password = clearAdminPassword.value.trim();
+
+      if (confirmText !== "确认清空") {
+        showToast("清空失败", "请输入确认口令“确认清空”。");
+        clearConfirmText.focus();
+        return;
+      }
+
+      if (!password) {
+        showToast("清空失败", "请输入管理员密码。");
+        clearAdminPassword.focus();
+        return;
+      }
+
+      confirmClearDataBtn.disabled = true;
+      confirmClearDataBtn.textContent = "清空中...";
+
+      try {
+        await requestJson("/api/admin/clear-data", {
+          method: "POST",
+          body: JSON.stringify({ confirmText, password })
+        });
+
+        closeClearDataModal();
+        await loadAllData();
+        showToast("清空完成", "学生提交记录和提交日志已清空，导师名单已保留。");
+      } catch (error) {
+        showToast("清空失败", error.message);
+      } finally {
+        confirmClearDataBtn.disabled = false;
+        confirmClearDataBtn.textContent = "确认清空";
+      }
     });
 
     document.querySelectorAll(".tab-btn").forEach(button => {
@@ -830,6 +1068,8 @@
         requestJson("/api/admin/submissions"),
         requestJson("/api/admin/logs")
       ]);
+
+      cachedSubmissions = submissions;
 
       renderSummary(stats, submissions);
       renderStats(stats);
@@ -856,11 +1096,22 @@
           <td>${index + 1}</td>
           <td>${escapeHtml(item.tutor)}</td>
           <td><span class="rank-badge rank-1">${item.first}</span></td>
-          <td><span class="rank-badge">${item.second}</span></td>
+          <td><span class="rank-badge rank-2">${item.second}</span></td>
           <td><span class="rank-badge">${item.third}</span></td>
           <td>${item.total}</td>
+          <td>
+            <button class="btn btn-secondary view-students-btn" type="button" data-tutor="${escapeHtml(item.tutor)}">
+              查看学生
+            </button>
+          </td>
         </tr>
       `).join("");
+
+      document.querySelectorAll(".view-students-btn").forEach(button => {
+        button.addEventListener("click", () => {
+          openTutorStudentsModal(button.dataset.tutor);
+        });
+      });
 
       empty.classList.toggle("hidden", stats.length > 0);
     }
@@ -912,6 +1163,91 @@
 
       empty.classList.toggle("hidden", logs.length > 0);
     }
+
+    function getTutorRank(item, tutorName) {
+      if (item.firstChoice === tutorName) return "第一志愿";
+      if (item.secondChoice === tutorName) return "第二志愿";
+      if (item.thirdChoice === tutorName) return "第三志愿";
+      return "";
+    }
+
+    function getRankClass(rank) {
+      if (rank === "第一志愿") return "rank-1";
+      if (rank === "第二志愿") return "rank-2";
+      return "";
+    }
+
+    function openTutorStudentsModal(tutorName) {
+      const modal = document.getElementById("tutorStudentsModal");
+      const title = document.getElementById("modalTutorTitle");
+      const body = document.getElementById("tutorStudentsBody");
+      const empty = document.getElementById("tutorStudentsEmpty");
+
+      const rankOrder = {
+        "第一志愿": 1,
+        "第二志愿": 2,
+        "第三志愿": 3
+      };
+
+      const rows = cachedSubmissions
+        .map(item => {
+          const rank = getTutorRank(item, tutorName);
+          if (!rank) return null;
+          return { ...item, rank };
+        })
+        .filter(Boolean)
+        .sort((a, b) =>
+          rankOrder[a.rank] - rankOrder[b.rank] ||
+          String(b.updatedAt || b.createdAt || "").localeCompare(String(a.updatedAt || a.createdAt || "")) ||
+          String(a.studentName || "").localeCompare(String(b.studentName || ""), "zh-CN")
+        );
+
+      title.textContent = `${tutorName} 学生选择明细`;
+
+      body.innerHTML = rows.map((item, index) => `
+        <tr>
+          <td>${index + 1}</td>
+          <td>${escapeHtml(item.studentName)}</td>
+          <td>${escapeHtml(item.major)}</td>
+          <td>${escapeHtml(item.contact)}</td>
+          <td><span class="rank-badge ${getRankClass(item.rank)}">${item.rank}</span></td>
+          <td>${escapeHtml(item.updatedAt || item.createdAt)}</td>
+        </tr>
+      `).join("");
+
+      empty.classList.toggle("hidden", rows.length > 0);
+      modal.classList.remove("hidden");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeTutorStudentsModal() {
+      const modal = document.getElementById("tutorStudentsModal");
+      modal.classList.add("hidden");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    }
+
+    document.getElementById("closeTutorStudentsModal").addEventListener("click", closeTutorStudentsModal);
+
+    document.getElementById("tutorStudentsModal").addEventListener("click", event => {
+      if (event.target.id === "tutorStudentsModal") {
+        closeTutorStudentsModal();
+      }
+    });
+
+    clearDataModal.addEventListener("click", event => {
+      if (event.target === clearDataModal) {
+        closeClearDataModal();
+      }
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") {
+        closeTutorStudentsModal();
+        closeClearDataModal();
+      }
+    });
 
     checkAdminStatus();
   </script>

@@ -15,7 +15,6 @@
       --theme_blue_soft: #eef6ff;
       --theme_success: #16a34a;
       --theme_warning: #d97706;
-      --theme_error: #dc2626;
       --theme_surface: #f8fafc;
       --theme_surface_blue: #f6faff;
       --theme_border: #e0e2e6;
@@ -216,11 +215,6 @@
       box-shadow: var(--theme_shadow);
     }
 
-    .btn-secondary:hover {
-      border-color: #c9d8ef;
-      box-shadow: rgba(45,127,249,0.16) 0px 6px 18px;
-    }
-
     .nav .btn-primary {
       min-height: 38px;
       padding: 8px 16px;
@@ -276,7 +270,6 @@
     .hero h1 {
       margin: 0;
       max-width: 680px;
-      font-family: "Haas Groot Disp", Haas, -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
       font-size: clamp(42px, 6.8vw, 64px);
       line-height: 1.08;
       font-weight: 800;
@@ -541,56 +534,30 @@
       max-width: 650px;
       color: var(--theme_text_weak);
       font-size: 14px;
-      line-height: 1.5;
+      line-height: 1.6;
     }
 
-    .preview-card {
-      margin: 0 28px 28px;
-      background: var(--theme_surface_blue);
-      border: 1px solid #dbeafe;
-      border-radius: 22px;
-      padding: 18px;
-    }
-
-    .preview-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-
-    .preview-title {
-      color: var(--theme_text);
-      font-size: 17px;
-      font-weight: 700;
-    }
-
-    .preview-list {
-      display: grid;
-      gap: 10px;
-    }
-
-    .choice-row {
-      min-height: 46px;
-      border: 1px solid var(--theme_border_soft);
+    .warning-note {
+      margin: 0 0 22px;
+      padding: 15px 16px;
       border-radius: 16px;
-      background: #fff;
-      padding: 10px 14px;
-      display: grid;
-      grid-template-columns: 92px 1fr;
-      gap: 12px;
-      align-items: center;
-      font-size: 14px;
-    }
-
-    .choice-row span:first-child {
-      color: var(--theme_text_weak);
-    }
-
-    .choice-row span:last-child {
-      color: var(--theme_text);
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      color: #9a3412;
+      font-size: 15px;
+      line-height: 1.55;
       font-weight: 600;
+    }
+
+    .field-hint {
+      margin: 0;
+      color: var(--theme_text_muted);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .field-hint.error {
+      color: #dc2626;
     }
 
     .right-stack {
@@ -740,35 +707,75 @@
 
     .toast {
       position: fixed;
-      right: 18px;
-      bottom: 18px;
+      left: 50%;
+      top: 50%;
+      right: auto;
+      bottom: auto;
       z-index: 100;
-      max-width: 380px;
-      background: rgba(255,255,255,0.96);
+      width: min(420px, calc(100% - 40px));
+      background: rgba(255,255,255,0.98);
       backdrop-filter: blur(18px);
       border: 1px solid var(--theme_border);
-      border-radius: 18px;
-      box-shadow: rgba(15,48,106,0.18) 0px 18px 48px;
-      padding: 14px 16px;
+      border-radius: 22px;
+      box-shadow: rgba(15,48,106,0.22) 0px 24px 70px;
+      padding: 22px 24px;
       color: var(--theme_text_weak);
-      font-size: 14px;
-      line-height: 1.45;
+      font-size: 15px;
+      line-height: 1.55;
+      text-align: center;
       opacity: 0;
-      transform: translateY(12px);
+      transform: translate(-50%, -46%) scale(0.96);
       pointer-events: none;
       transition: .18s ease;
     }
 
     .toast.show {
       opacity: 1;
-      transform: translateY(0);
+      transform: translate(-50%, -50%) scale(1);
     }
 
     .toast strong {
       display: block;
       color: var(--theme_text);
-      font-size: 15px;
-      margin-bottom: 4px;
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
+
+    .message-mask {
+      position: fixed;
+      inset: 0;
+      z-index: 120;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(11, 23, 45, 0.42);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .message-card {
+      width: min(460px, 100%);
+      background: #fff;
+      border: 1px solid var(--theme_border);
+      border-radius: 24px;
+      box-shadow: rgba(15,48,106,0.22) 0 28px 80px;
+      padding: 28px;
+      text-align: center;
+    }
+
+    .message-card h2 {
+      margin: 0 0 10px;
+      color: var(--theme_text);
+      font-size: 26px;
+      line-height: 1.2;
+    }
+
+    .message-card p {
+      margin: 0 0 22px;
+      color: var(--theme_text_weak);
+      font-size: 16px;
+      line-height: 1.6;
     }
 
     .footer {
@@ -898,7 +905,7 @@
           <div class="feature-card">
             <div class="feature-icon">3</div>
             <strong>信息保护</strong>
-            <span>本页面仅展示人数统计，不展示任何个人信息。</span>
+            <span>学生端仅展示人数统计，不展示任何个人信息。</span>
           </div>
         </div>
       </section>
@@ -915,6 +922,10 @@
             </div>
 
             <form class="form" id="choiceForm">
+              <div class="warning-note">
+                温馨提示：本系统原则上仅允许提交 3 次，请确认无误后再提交。频繁重复提交可能影响最终统计结果。
+              </div>
+
               <div class="form-grid">
                 <div class="form-group">
                   <label for="studentName">姓名</label>
@@ -926,7 +937,8 @@
                 </div>
                 <div class="form-group full">
                   <label for="contact">联系方式</label>
-                  <input class="field" id="contact" name="contact" placeholder="手机号 / 微信 / 邮箱，用于防止重复提交" required />
+                  <input class="field" id="contact" name="contact" placeholder="请输入 11 位手机号或邮箱" aria-describedby="contactHint" required />
+                  <p class="field-hint" id="contactHint">仅支持 11 位手机号或有效邮箱。</p>
                 </div>
                 <div class="form-group">
                   <label for="firstChoice">第一志愿导师</label>
@@ -943,26 +955,16 @@
               </div>
 
               <div class="form-footer">
-                <p class="note">规则：三个志愿不能重复。同一联系方式再次提交，会覆盖当前结果；正式版建议改成“学号唯一”。</p>
+                <p class="note">
+                  规则：三个志愿不能重复；联系方式仅支持 11 位手机号或有效邮箱。技术上同一联系方式最多允许提交 5 次，超过后请联系学院老师处理。
+                </p>
                 <button class="btn btn-primary" id="submitBtn" type="submit">提交志愿</button>
               </div>
             </form>
-
-            <div class="preview-card">
-              <div class="preview-top">
-                <span class="preview-title">当前选择预览</span>
-                <span class="pill">实时预览</span>
-              </div>
-              <div class="preview-list">
-                <div class="choice-row"><span>第一志愿</span><span id="previewFirst">尚未选择</span></div>
-                <div class="choice-row"><span>第二志愿</span><span id="previewSecond">尚未选择</span></div>
-                <div class="choice-row"><span>第三志愿</span><span id="previewThird">尚未选择</span></div>
-              </div>
-            </div>
           </div>
 
           <aside class="right-stack">
-            <div class="panel tutor-public-panel">
+            <div class="panel">
               <div class="panel-header">
                 <div class="panel-title">
                   <h3>导师选择情况</h3>
@@ -974,7 +976,6 @@
               <div class="public-note">
                 页面仅展示人数统计信息，不展示学生个人信息。
               </div>
-
               <div class="public-tutor-list" id="studentTutorStatsBody"></div>
             </div>
           </aside>
@@ -1023,10 +1024,18 @@
 
   <footer class="footer">
     武汉体育学院新闻传播学院 · 研究生导师选择系统<br />
-    页面仅展示导师选择人数统计；完整提交名单仅管理员后台可见。
+    学生端仅展示导师选择人数统计；完整提交名单仅管理员后台可见。
   </footer>
 
   <div class="toast" id="toast"></div>
+
+  <div class="message-mask hidden" id="successModal" aria-hidden="true">
+    <div class="message-card" role="dialog" aria-modal="true" aria-labelledby="successTitle">
+      <h2 id="successTitle">提交成功</h2>
+      <p id="successMessage">提交成功！请确认信息无误，后续如需修改请联系学院老师。</p>
+      <button class="btn btn-primary" type="button" id="successConfirmBtn">我知道了</button>
+    </div>
+  </div>
 
   <script>
     const FALLBACK_TUTORS = [
@@ -1039,21 +1048,42 @@
 
     let tutors = [...FALLBACK_TUTORS];
     let latestStats = [];
+    let successTimer = null;
 
     const choiceForm = document.getElementById("choiceForm");
+    const contactInput = document.getElementById("contact");
+    const contactHint = document.getElementById("contactHint");
     const firstChoice = document.getElementById("firstChoice");
     const secondChoice = document.getElementById("secondChoice");
     const thirdChoice = document.getElementById("thirdChoice");
-    const previewFirst = document.getElementById("previewFirst");
-    const previewSecond = document.getElementById("previewSecond");
-    const previewThird = document.getElementById("previewThird");
     const submitBtn = document.getElementById("submitBtn");
     const toast = document.getElementById("toast");
+    const successModal = document.getElementById("successModal");
+    const successConfirmBtn = document.getElementById("successConfirmBtn");
 
     function showToast(title, message) {
-      toast.innerHTML = `<strong>${escapeHtml(title)}</strong>${escapeHtml(message)}`;
+      const titleNode = document.createElement("strong");
+      titleNode.textContent = title;
+      const messageNode = document.createTextNode(message);
+      toast.replaceChildren(titleNode, messageNode);
       toast.classList.add("show");
       setTimeout(() => toast.classList.remove("show"), 3000);
+    }
+
+    function showSuccessModal() {
+      successModal.classList.remove("hidden");
+      successModal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+
+      window.clearTimeout(successTimer);
+      successTimer = window.setTimeout(closeSuccessModal, 4500);
+    }
+
+    function closeSuccessModal() {
+      window.clearTimeout(successTimer);
+      successModal.classList.add("hidden");
+      successModal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
     }
 
     function escapeHtml(value) {
@@ -1101,17 +1131,6 @@
       return data;
     }
 
-    function setApiStatus(online) {
-      const pill = document.getElementById("apiStatusPill");
-      if (!pill) return;
-
-      if (online) {
-        pill.innerHTML = `<span class="status-dot"></span>已连接`;
-      } else {
-        pill.innerHTML = `<span class="status-dot warning"></span>连接中`;
-      }
-    }
-
     function initSelect(select, placeholder) {
       select.innerHTML = "";
 
@@ -1119,6 +1138,7 @@
       placeholderOption.value = "";
       placeholderOption.textContent = placeholder;
       placeholderOption.selected = true;
+      placeholderOption.defaultSelected = true;
       placeholderOption.disabled = true;
       select.appendChild(placeholderOption);
 
@@ -1128,22 +1148,48 @@
         option.textContent = name;
         select.appendChild(option);
       });
+
+      select.value = "";
+    }
+
+    function setApiStatus(online) {
+      const pill = document.getElementById("apiStatusPill");
+      if (!pill) return;
+
+      pill.replaceChildren();
+
+      const dot = document.createElement("span");
+      dot.className = online ? "status-dot" : "status-dot warning";
+      pill.appendChild(dot);
+      pill.appendChild(document.createTextNode(online ? "已连接" : "连接中"));
     }
 
     function refreshSelects() {
-      const currentFirst = firstChoice.value;
-      const currentSecond = secondChoice.value;
-      const currentThird = thirdChoice.value;
-
       initSelect(firstChoice, "请选择第一志愿导师");
       initSelect(secondChoice, "请选择第二志愿导师");
       initSelect(thirdChoice, "请选择第三志愿导师");
+    }
 
-      if (tutors.includes(currentFirst)) firstChoice.value = currentFirst;
-      if (tutors.includes(currentSecond)) secondChoice.value = currentSecond;
-      if (tutors.includes(currentThird)) thirdChoice.value = currentThird;
+    function resetFormAfterSubmit() {
+      choiceForm.reset();
+      refreshSelects();
+      document.getElementById("studentName").value = "";
+      document.getElementById("major").value = "";
+      contactInput.value = "";
+      clearContactHint();
+    }
 
-      updatePreview();
+    async function loadTutors() {
+      try {
+        const data = await apiGet("/api/tutors");
+        if (Array.isArray(data) && data.length > 0) {
+          tutors = data;
+        }
+      } catch (error) {
+        tutors = [...FALLBACK_TUTORS];
+      }
+
+      refreshSelects();
     }
 
     function buildZeroStats() {
@@ -1156,29 +1202,12 @@
       }));
     }
 
-    async function loadTutors() {
-      try {
-        const data = await apiGet("/api/tutors");
-        if (Array.isArray(data) && data.length > 0) {
-          tutors = data;
-        }
-        setApiStatus(true);
-      } catch (error) {
-        console.warn(error);
-        tutors = [...FALLBACK_TUTORS];
-        setApiStatus(false);
-      }
-
-      refreshSelects();
-    }
-
     async function loadTutorStats() {
       try {
         const data = await apiGet("/api/public/tutor-stats");
         latestStats = normalizeStats(Array.isArray(data) ? data : []);
         setApiStatus(true);
       } catch (error) {
-        console.warn(error);
         latestStats = buildZeroStats();
         setApiStatus(false);
       }
@@ -1192,6 +1221,8 @@
       const map = new Map();
 
       apiStats.forEach(item => {
+        if (!tutors.includes(item.tutor)) return;
+
         map.set(item.tutor, {
           tutor: item.tutor,
           first: Number(item.first || 0),
@@ -1209,7 +1240,12 @@
           third: 0,
           total: 0
         };
-      }).sort((a, b) => b.first - a.first || b.total - a.total || a.tutor.localeCompare(b.tutor, "zh-CN"));
+      }).sort((a, b) =>
+        b.first - a.first ||
+        b.second - a.second ||
+        b.third - a.third ||
+        a.tutor.localeCompare(b.tutor, "zh-CN")
+      );
     }
 
     function renderTutorStats(stats) {
@@ -1283,12 +1319,6 @@
       `).join("");
     }
 
-    function updatePreview() {
-      previewFirst.textContent = firstChoice.value || "尚未选择";
-      previewSecond.textContent = secondChoice.value || "尚未选择";
-      previewThird.textContent = thirdChoice.value || "尚未选择";
-    }
-
     function switchPage(pageId) {
       document.querySelectorAll(".page-view").forEach(page => page.classList.add("hidden"));
       const target = document.getElementById(pageId);
@@ -1301,9 +1331,47 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
+    function isValidContact(contact) {
+      const phonePattern = /^\d{11}$/;
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      return phonePattern.test(contact) || emailPattern.test(contact);
+    }
+
+    function showContactHint(message, isError) {
+      contactHint.textContent = message;
+      contactHint.classList.toggle("error", Boolean(isError));
+      contactInput.setCustomValidity(isError ? message : "");
+    }
+
+    function clearContactHint() {
+      showContactHint("仅支持 11 位手机号或有效邮箱。", false);
+    }
+
+    function validateContactInput() {
+      const contact = contactInput.value.trim();
+
+      if (!contact) {
+        clearContactHint();
+        return true;
+      }
+
+      if (!isValidContact(contact)) {
+        showContactHint("联系方式格式不正确，请填写 11 位手机号或有效邮箱。", true);
+        return false;
+      }
+
+      clearContactHint();
+      return true;
+    }
+
     function validateLocalForm(payload) {
       if (!payload.studentName || !payload.major || !payload.contact) {
         return "请完整填写姓名、专业和联系方式。";
+      }
+
+      if (!isValidContact(payload.contact)) {
+        return "联系方式格式不正确，请填写 11 位手机号或有效邮箱。";
       }
 
       if (!payload.firstChoice || !payload.secondChoice || !payload.thirdChoice) {
@@ -1331,6 +1399,7 @@
 
       const error = validateLocalForm(payload);
       if (error) {
+        validateContactInput();
         showToast("提交失败", error);
         return;
       }
@@ -1339,32 +1408,40 @@
       submitBtn.textContent = "提交中...";
 
       try {
-        const result = await apiPost("/api/submit-choice", payload);
-        showToast("提交成功", result.message || "志愿已提交。");
-        choiceForm.reset();
-        updatePreview();
+        await apiPost("/api/submit-choice", payload);
+        resetFormAfterSubmit();
         await loadTutorStats();
+        showSuccessModal();
       } catch (error) {
-        showToast("提交失败", error.message || "请检查后端是否已经启动。 ");
+        showToast("提交失败", error.message || "请检查后端是否已经启动。");
       } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = "提交志愿";
       }
     });
 
-    [firstChoice, secondChoice, thirdChoice].forEach(select => {
-      select.addEventListener("change", updatePreview);
-    });
-
     document.querySelectorAll("[data-page]").forEach(button => {
       button.addEventListener("click", () => switchPage(button.dataset.page));
     });
 
+    contactInput.addEventListener("input", validateContactInput);
+    contactInput.addEventListener("blur", validateContactInput);
+    successConfirmBtn.addEventListener("click", closeSuccessModal);
+
+    successModal.addEventListener("click", event => {
+      if (event.target === successModal) {
+        closeSuccessModal();
+      }
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape" && !successModal.classList.contains("hidden")) {
+        closeSuccessModal();
+      }
+    });
+
     async function initPage() {
       refreshSelects();
-      renderTutorStats(buildZeroStats());
-      renderStudentTutorStats(buildZeroStats());
-      renderHeroTutorTrend(buildZeroStats());
       await loadTutors();
       await loadTutorStats();
     }

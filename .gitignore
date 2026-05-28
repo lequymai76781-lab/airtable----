@@ -1,0 +1,8 @@
+data/*
+!data/.gitkeep
+data/*.db
+data/admin_initial_password.txt
+*.db
+__pycache__/
+*.pyc
+.env
