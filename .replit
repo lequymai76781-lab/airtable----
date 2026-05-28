@@ -1,4 +1,5 @@
 run = "python app.py"
+modules = ["python-3.11"]
 
 [deployment]
 deploymentTarget = "autoscale"
@@ -6,3 +7,6 @@ run = ["gunicorn", "--bind=0.0.0.0:5000", "--reuse-port", "app:app"]
 
 [agent]
 expertMode = true
+
+[nix]
+channel = "stable-25_05"
